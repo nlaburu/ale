@@ -15,7 +15,7 @@ Execute(The black callback should return the correct default values):
   AssertEqual
   \ {
   \   'cwd': '%s:h',
-  \   'command': ale#Escape(ale#path#Simplify(g:dir . '/../test-files/python/with_virtualenv/env/' . b:bin_dir . '/black')) . ' -'},
+  \   'command': ale#Escape(ale#path#Simplify(g:dir . '/../test-files/python/with_virtualenv/env/' . b:bin_dir . '/black')) . ' --stdin-filename ''/testplugin/test/test-files/python/with_virtualenv/subdir/foo/bar.py'' -'},
   \ ale#fixers#black#Fix(bufnr(''))
 
 Execute(The black callback should include options):
@@ -24,7 +24,7 @@ Execute(The black callback should include options):
 
   silent execute 'file ' . fnameescape(g:dir . '/../test-files/python/with_virtualenv/subdir/foo/bar.py')
   AssertEqual
-  \ {'command': ale#Escape(ale#path#Simplify(g:dir . '/../test-files/python/with_virtualenv/env/' . b:bin_dir . '/black')) . ' --some-option -' },
+  \ {'command': ale#Escape(ale#path#Simplify(g:dir . '/../test-files/python/with_virtualenv/env/' . b:bin_dir . '/black')) . ' --some-option --stdin-filename ''/testplugin/test/test-files/python/with_virtualenv/subdir/foo/bar.py'' -'},
   \ ale#fixers#black#Fix(bufnr(''))
 
 Execute(The black callback should include --pyi for .pyi files):
@@ -33,7 +33,7 @@ Execute(The black callback should include --pyi for .pyi files):
   silent execute 'file ' . fnameescape(g:dir . '/../test-files/python/with_virtualenv/subdir/foo/bar.pyi')
 
   AssertEqual
-  \ {'command': ale#Escape(ale#path#Simplify(g:dir . '/../test-files/python/with_virtualenv/env/' . b:bin_dir . '/black')) . ' --pyi -' },
+  \ {'command': ale#Escape(ale#path#Simplify(g:dir . '/../test-files/python/with_virtualenv/env/' . b:bin_dir . '/black')) . ' --stdin-filename ''/testplugin/test/test-files/python/with_virtualenv/subdir/foo/bar.pyi'' --pyi -'},
   \ ale#fixers#black#Fix(bufnr(''))
 
 Execute(The black callback should not concatenate options):
@@ -43,7 +43,7 @@ Execute(The black callback should not concatenate options):
   silent execute 'file ' . fnameescape(g:dir . '/../test-files/python/with_virtualenv/subdir/foo/bar.pyi')
 
   AssertEqual
-  \ {'command': ale#Escape(ale#path#Simplify(g:dir . '/../test-files/python/with_virtualenv/env/' . b:bin_dir . '/black')) . ' --some-option --pyi -' },
+  \ {'command': ale#Escape(ale#path#Simplify(g:dir . '/../test-files/python/with_virtualenv/env/' . b:bin_dir . '/black')) . ' --some-option --stdin-filename ''/testplugin/test/test-files/python/with_virtualenv/subdir/foo/bar.pyi'' --pyi -'},
   \ ale#fixers#black#Fix(bufnr(''))
 
 Execute(Pipenv is detected when python_black_auto_pipenv is set):
@@ -53,7 +53,7 @@ Execute(Pipenv is detected when python_black_auto_pipenv is set):
   call ale#test#SetFilename('../test-files/python/pipenv/whatever.py')
 
   AssertEqual
-  \ {'command': ale#Escape('pipenv') . ' run black -'},
+  \ {'command': ale#Escape('pipenv') . ' run black --stdin-filename ''/testplugin/test/test-files/python/pipenv/whatever.py'' -'},
   \ ale#fixers#black#Fix(bufnr(''))
 
 Execute(Poetry is detected when python_black_auto_poetry is set):
@@ -63,7 +63,7 @@ Execute(Poetry is detected when python_black_auto_poetry is set):
   call ale#test#SetFilename('../test-files/python/poetry/whatever.py')
 
   AssertEqual
-  \ {'command': ale#Escape('poetry') . ' run black -'},
+  \ {'command': ale#Escape('poetry') . ' run black --stdin-filename ''/testplugin/test/test-files/python/poetry/whatever.py'' -'},
   \ ale#fixers#black#Fix(bufnr(''))
 
 Execute(uv is detected when python_black_auto_uv is set):
@@ -73,5 +73,5 @@ Execute(uv is detected when python_black_auto_uv is set):
   call ale#test#SetFilename('../test-files/python/uv/whatever.py')
 
   AssertEqual
-  \ {'command': ale#Escape('uv') . ' run black -'},
+  \ {'command': ale#Escape('uv') . ' run black --stdin-filename ''/testplugin/test/test-files/python/uv/whatever.py'' -'},
   \ ale#fixers#black#Fix(bufnr(''))
